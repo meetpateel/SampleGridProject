@@ -1,0 +1,61 @@
+﻿@model MonitorViewModel
+@{
+    ViewData["Title"] = "Choose A Monitor";
+}
+<form id="MonitorSearchForm" asp-controller="Products">
+    <div id="container">
+        @(Html
+                .Grid(Model.Monitors)
+                .Build(cols =>
+                {
+                    cols.Add(model => $"<a id='EditBox' style='cursor:pointer;color:blue;text-decoration:underline;text-decoration-color:blue'>Edit</a>").Encoded(false);
+                    cols.Add(model => model.MonitorId).Titled("ModelId").Hidden();
+                    cols.Add(model => model.Name).Titled("Name");
+                    cols.Add(model => model.Description).Titled("Description");
+                    cols.Add(model => model.Price).Titled("Price");
+                    cols.Add(model => model.Quantity).Titled("Quantity");
+                    cols.Add(model => $"<img src ='~/Images/Monitors.png'/>").Encoded(false).Titled("Image");
+                })
+                .Empty("No data found")
+                .Filterable()
+                .Sortable()
+                .Pageable(pager=>
+                {
+                    pager.ShowPageSizes = false;
+                    pager.PagesToDisplay = 5;
+                    pager.CurrentPage = 1;
+                    pager.RowsPerPage = 20;
+                })
+            )
+    </div>
+    <button type="button" class="btn btn-primary" id="AddApplication">Add</button>
+</form>
+
+<div id="Edit-Product-DialogBox" title="Edit Monitor Details">
+    <form id="MonitorDetailForm" asp-controller="Products" asp-action="EditItem">
+        <div class="form-group">
+            <input type="hidden" id="monitorId" asp-for="SelectedMonitor.MonitorId" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedMonitor.Name"></label>
+            <input id="monitorName" asp-for="SelectedMonitor.Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedMonitor.Description"></label>
+            <input id="monitorDescription" asp-for="SelectedMonitor.Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedMonitor.Price"></label>
+            <input id="monitorPrice" asp-for="SelectedMonitor.Price" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedMonitor.Quantity"></label>
+            <input id="monitorQuantity" asp-for="SelectedMonitor.Quantity" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="SelectedMonitor.Image"></label>
+            <input id="monitorImage" asp-for="SelectedMonitor.Image" type="file" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary" asp-action="SaveDetails">Save</button>
+    </form>
+</div>
